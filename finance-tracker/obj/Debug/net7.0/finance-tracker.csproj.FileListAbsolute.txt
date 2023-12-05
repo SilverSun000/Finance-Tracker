@@ -12,3 +12,17 @@ C:\Users\exx\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\r
 C:\Users\exx\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\finance-tracker.pdb
 C:\Users\exx\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\finance-tracker.genruntimeconfig.cache
 C:\Users\exx\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\ref\finance-tracker.dll
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\bin\Debug\net7.0\finance-tracker.exe
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\bin\Debug\net7.0\finance-tracker.deps.json
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\bin\Debug\net7.0\finance-tracker.runtimeconfig.json
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\bin\Debug\net7.0\finance-tracker.dll
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\bin\Debug\net7.0\finance-tracker.pdb
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\finance-tracker.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\finance-tracker.AssemblyInfoInputs.cache
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\finance-tracker.AssemblyInfo.cs
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\finance-tracker.csproj.CoreCompileInputs.cache
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\finance-tracker.dll
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\refint\finance-tracker.dll
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\finance-tracker.pdb
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\finance-tracker.genruntimeconfig.cache
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\ref\finance-tracker.dll

@@ -6,5 +6,10 @@ class Program {
         test.createNewUser();
         test.showUserInfo();
         test.Login(test.Username, test.Password);
+
+        using(StreamWriter writer = new StreamWriter("C:/Users/Billson/Documents/Github/Finance-Tracker/userCredentials.txt")) {
+            writer.WriteLine("beans beans beans \n" +
+                "also another test."); 
+        }
     }
 }
