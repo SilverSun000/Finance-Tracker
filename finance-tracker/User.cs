@@ -1,7 +1,9 @@
 using System;
+using System.IO;
 
 public class User : IUserSetup {
     private userInfo testStruct;
+    private Dictionary<string, string> hash = new Dictionary<string, string>();
     public string UserID {
         get { return testStruct.userID; }
         set { testStruct.userID = value; }
@@ -23,11 +25,22 @@ public class User : IUserSetup {
 
         Console.WriteLine("Enter password:");
         testStruct.password = Console.ReadLine() ?? string.Empty;
+
+        hash.Add(Username, Password);
+        //Console.WriteLine(Username + " " + Password);
+    }
+
+    public void Login(string username, string password) {
+        if (hash.TryGetValue(username, out var value)) {
+            Console.WriteLine("Access Granted!");
+        }
+        else {
+            Console.WriteLine("Account doesn't exist!");
+        }
     }
     public void showUserInfo() {
         Console.WriteLine(testStruct.userID);
         Console.WriteLine(testStruct.username);
         Console.WriteLine(testStruct.password);
     }
-
 }

@@ -5,5 +5,6 @@ class Program {
         User test = new User();
         test.createNewUser();
         test.showUserInfo();
+        test.Login(test.Username, test.Password);
     }
 }
