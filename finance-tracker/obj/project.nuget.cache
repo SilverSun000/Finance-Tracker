@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "wXzlAt5IJxOafTTQNgBsPLrowu/ZVH05NMv2Kg61JBwSVHr1+OoS91sWLHGB4Y24K9lEzZVD6U6vop5g2dUdhw==",
+  "dgSpecHash": "0F+n7U8FByE3LSpRXAmvAkpFuJYlBR9gwRF/qKKT5o+GZ78db7Zp6ZEp4DtWbcPd1sfdAuCkACT+KvLvCijo/A==",
   "success": true,
   "projectFilePath": "C:\\Users\\Billson\\Documents\\GitHub\\Finance-Tracker\\finance-tracker\\finance-tracker.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Billson\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

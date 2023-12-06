@@ -26,3 +26,6 @@ C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7
 C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\finance-tracker.pdb
 C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\finance-tracker.genruntimeconfig.cache
 C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\ref\finance-tracker.dll
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\finance-tracker.csproj.AssemblyReference.cache
+C:\Users\Billson\Documents\GitHub\Finance-Tracker\finance-tracker\obj\Debug\net7.0\finance-tracker.csproj.CopyComplete
