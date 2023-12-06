@@ -4,7 +4,7 @@ using System.IO;
 using Newtonsoft.Json;
 
 class Program {
-    static void Main(string[] args) {
+    static void Main() {
         User test = new User();
 
         //string filePath = "C:/Users/Billson/Documents/Github/Finance-Tracker/userCredentials.txt";
