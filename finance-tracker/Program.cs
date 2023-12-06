@@ -15,7 +15,8 @@ class Program {
             Console.Clear();
             Console.WriteLine("1. Register");
             Console.WriteLine("2. Login");
-            Console.WriteLine("3. Exit");
+            Console.WriteLine("3. Clear all credentials");
+            Console.WriteLine("4. Exit");
 
             Console.Write("Enter your choice: ");
             string choice = Console.ReadLine();
@@ -41,9 +42,14 @@ class Program {
                         Console.WriteLine("Login successful!");
                     else
                         Console.WriteLine("Invalid username or password.");
+                    Console.ReadKey();
+                    break;
+                case "3":
+                    test.DeleteCredentials(filePath, credentials);
+                    Console.Write("All cleared.");
                     break;
 
-                case "3":
+                case "4":
                     Environment.Exit(0);
                     break;
 
