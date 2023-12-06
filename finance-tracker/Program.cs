@@ -1,22 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
+using System.Security.Cryptography;
+using System.Text;
 
-class Program {
-    static void Main(string[] args) {
-        User test = new User();
+class Program
+{
+    static void Main(string[] args)
+    {
+        string credPath = "../userCredentials.txt";
 
-        string filePath = "C:/Users/Billson/Documents/Github/Finance-Tracker/userCredentials.txt";
-        var credentials = test.loadCredentials(filePath);
+        var credentials = new Credentials();
+        credentials.TryLoadFrom(credPath);
 
         while (true)
         {
             Console.Clear();
-            Console.WriteLine("1. Register");
-            Console.WriteLine("2. Login");
-            Console.WriteLine("3. Clear all credentials");
-            Console.WriteLine("4. Exit");
+            Console.WriteLine(
+                    """
+                    1. Register
+                    2. Login
+                    3. Clear all credentials
+                    4. Exit
+                    """);
 
             Console.Write("Enter your choice: ");
             string choice = Console.ReadLine() ?? string.Empty;
@@ -24,39 +28,68 @@ class Program {
             switch (choice)
             {
                 case "1":
-                    Console.Write("Enter username: ");
-                    string registerUsername = Console.ReadLine() ?? string.Empty;
-                    Console.Write("Enter password: ");
-                    string registerPassword = Console.ReadLine() ?? string.Empty;
-                    test.RegisterUser(credentials, registerUsername, registerPassword);
-                    test.SaveCredentials(filePath, credentials);
-                    Console.WriteLine("Registration successful!");
-                    break;
+                    Register(credentials);
+                    credentials.Save(credPath);
 
+                    break;
                 case "2":
-                    Console.Write("Enter username: ");
-                    string loginUsername = Console.ReadLine() ?? string.Empty;
-                    Console.Write("Enter password: ");
-                    string loginPassword = Console.ReadLine() ?? string.Empty;
-                    if (test.AuthenticateUser(credentials, loginUsername, loginPassword))
-                        Console.WriteLine("Login successful!");
-                    else
-                        Console.WriteLine("Invalid username or password.");
+                    TryLogin(credentials);
                     Console.ReadKey();
                     break;
                 case "3":
-                    test.DeleteCredentials(filePath, credentials);
+                    credentials.Clear();
+                    credentials.Save(credPath);
+
                     Console.Write("All cleared.");
                     break;
-
                 case "4":
+                    Console.Clear();
                     Environment.Exit(0);
                     break;
-
                 default:
                     Console.WriteLine("Invalid choice. Please try again.");
                     break;
             }
         }
+
+    }
+
+    static (string name, string pass) RequestCredentials()
+    {
+        Console.Write("Enter username: ");
+        var newUsername = Console.ReadLine();
+
+        Console.Write("Enter password: ");
+        var newPassword = Console.ReadLine();
+
+        return (newUsername, newPassword);
+    }
+
+    static User Register(Credentials creds)
+    {
+        var login = RequestCredentials();
+        var user = new User(login.name);
+
+        creds.Register(login.name, login.pass);
+
+        Console.WriteLine("Registration successful!");
+        return user;
+    }
+
+
+    static User TryLogin(Credentials creds)
+    {
+        var login = RequestCredentials();
+
+        if (creds.TryAuthenticate(login.name, login.pass))
+        {
+            Console.WriteLine("Login successful!");
+
+            return new User(login.name);
+        }
+
+        Console.WriteLine("Invalid username or password.");
+
+        return null;
     }
 }
