@@ -7,7 +7,8 @@ class Program {
     static void Main(string[] args) {
         User test = new User();
 
-        string filePath = "C:/Users/Billson/Documents/Github/Finance-Tracker/userCredentials.txt";
+        //string filePath = "C:/Users/Billson/Documents/Github/Finance-Tracker/userCredentials.txt";
+        string filePath = "C:/Users/exx/Documents/GitHub/Finance-Tracker/userCredentials.txt";
         var credentials = test.loadCredentials(filePath);
 
         while (true)
@@ -50,6 +51,7 @@ class Program {
                     break;
 
                 case "4":
+                    Console.Clear();
                     Environment.Exit(0);
                     break;
 
