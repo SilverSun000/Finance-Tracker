@@ -19,15 +19,15 @@ class Program {
             Console.WriteLine("4. Exit");
 
             Console.Write("Enter your choice: ");
-            string choice = Console.ReadLine();
+            string choice = Console.ReadLine() ?? string.Empty;
 
             switch (choice)
             {
                 case "1":
                     Console.Write("Enter username: ");
-                    string registerUsername = Console.ReadLine();
+                    string registerUsername = Console.ReadLine() ?? string.Empty;
                     Console.Write("Enter password: ");
-                    string registerPassword = Console.ReadLine();
+                    string registerPassword = Console.ReadLine() ?? string.Empty;
                     test.RegisterUser(credentials, registerUsername, registerPassword);
                     test.SaveCredentials(filePath, credentials);
                     Console.WriteLine("Registration successful!");
@@ -35,9 +35,9 @@ class Program {
 
                 case "2":
                     Console.Write("Enter username: ");
-                    string loginUsername = Console.ReadLine();
+                    string loginUsername = Console.ReadLine() ?? string.Empty;
                     Console.Write("Enter password: ");
-                    string loginPassword = Console.ReadLine();
+                    string loginPassword = Console.ReadLine() ?? string.Empty;
                     if (test.AuthenticateUser(credentials, loginUsername, loginPassword))
                         Console.WriteLine("Login successful!");
                     else
