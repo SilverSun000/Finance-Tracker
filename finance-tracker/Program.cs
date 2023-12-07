@@ -6,6 +6,7 @@ class Program
 {
     static void Main(string[] args)
     {
+        /*
         string credPath = "../userCredentials.txt";
 
         var credentials = new Credentials();
@@ -52,6 +53,19 @@ class Program
             }
         }
 
+    }
+    */
+
+    var categoryTree = new Tree<string>("Root");
+
+    var expensesNode = categoryTree.AddNode(categoryTree.Root, "Expenses");
+    var foodNode = categoryTree.AddNode(expensesNode, "Food");
+    var groceriesNode = categoryTree.AddNode(foodNode, "Groceries");
+    var restaurantsNode = categoryTree.AddNode(foodNode, "Restaurants");
+    var rentNode = categoryTree.AddNode(expensesNode, "Rent");
+
+    // Print the tree structure
+    categoryTree.Traverse(categoryTree.Root, 0);
     }
 
     static (string name, string pass) RequestCredentials()
