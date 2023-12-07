@@ -19,6 +19,13 @@ public class Tree<T> {
         if (currentNode != null) {
             Console.WriteLine($"{new string(' ', depth * 2)}{currentNode.Data}");
 
+            if(currentNode.Children.Count == 0) {
+                Console.WriteLine($"{new String(' ', (depth + 1) * 2)}Transactions:");
+                foreach(var transaction in currentNode.Transactions) {
+                    Console.WriteLine($"{new string(' ', (depth + 2) * 2)}Amount: {transaction.Amount}, Date: {transaction.Date}");
+                }
+            }
+
             foreach (var child in currentNode.Children) {
                 Traverse(child, depth + 1);
             }
@@ -30,6 +37,16 @@ public class TreeNode<T> {
     public T Data { get; set; }
     public List<TreeNode<T>> Children { get; set; }
     public TreeNode<T> Parent { get; set; }
+    public List<Transaction> Transactions { get; set; }
 
-    public TreeNode(T data) { Data = data; Children = new List<TreeNode<T>>(); }
+    public TreeNode(T data) { 
+        Data = data; 
+        Children = new List<TreeNode<T>>();
+        Transactions = new List<Transaction>();
+    }
+}
+
+public class Transaction {
+    public decimal Amount { get; set; }
+    public DateTime Date { get; set; }
 }
