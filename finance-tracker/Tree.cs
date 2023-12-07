@@ -45,8 +45,3 @@ public class TreeNode<T> {
         Transactions = new List<Transaction>();
     }
 }
-
-public class Transaction {
-    public decimal Amount { get; set; }
-    public DateTime Date { get; set; }
-}
