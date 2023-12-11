@@ -2,8 +2,8 @@ using Newtonsoft.Json;
 
 public class User
 {
-    string Username { get; }
-    //string UserID { get; }
-
-    public User(string username) { Username = username; }
+    public int Id { get; set; }
+    string Username { get; set; }
+    public User() {}
+    public User(string username) : this() { Username = username; }
 }
