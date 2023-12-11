@@ -7,54 +7,55 @@ class Program {
     static void Main() {
         string credPath = "../userCredentials.txt";
 
-        var credentials = new Credentials();
-        credentials.TryLoadFrom(credPath);
+        using (var dbContext = new AppDbContext()) {
+            var credentials = new Credentials();
+            credentials.TryLoadFrom(credPath);
 
-        while (true)
-        {
-            Console.Clear();
-            Console.WriteLine(
-                """
-                1. Register
-                2. Login
-                3. Clear all credentials
-                4. Exit
-                """
-            );
-
-            Console.Write("Enter your choice: ");
-            string choice = Console.ReadLine() ?? string.Empty;
-
-            switch (choice)
+            while (true)
             {
-                case "1":
-                    Register(credentials);
-                    credentials.Save(credPath);
+                Console.Clear();
+                Console.WriteLine(
+                    """
+                    1. Register
+                    2. Login
+                    3. Clear all credentials
+                    4. Exit
+                    """
+                );
 
-                    break;
-                case "2":
-                    TryLogin(credentials);
-                    Console.ReadKey();
+                Console.Write("Enter your choice: ");
+                string choice = Console.ReadLine() ?? string.Empty;
 
-                    break;
-                case "3":
-                    credentials.Clear();
-                    credentials.Save(credPath);
+                switch (choice)
+                {
+                    case "1":
+                        Register(credentials, dbContext);
+                        credentials.Save(credPath);
 
-                    Console.WriteLine("All Cealred.");
-                    break;
-                case "4":
-                    Console.Clear();
-                    Environment.Exit(0);
-                    break;
+                        break;
+                    case "2":
+                        TryLogin(credentials);
+                        Console.ReadKey();
 
-                default:
-                    Console.WriteLine("Invalid choice. Please try again.");
-                    break;
+                        break;
+                    case "3":
+                        credentials.Clear();
+                        credentials.Save(credPath);
+
+                        Console.WriteLine("All Cealred.");
+                        break;
+                    case "4":
+                        Console.Clear();
+                        Environment.Exit(0);
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        break;
+                }
             }
         }
     }
-
     static (string name, string pass) RequestCredentials() {
         Console.Write("Enter Username: ");
         var newUsername = Console.ReadLine();
@@ -65,14 +66,30 @@ class Program {
         return (newUsername, newPassword);
     }
 
-    static User Register(Credentials creds) {
+    static void Register(Credentials creds, AppDbContext dbContext) {
         var login = RequestCredentials();
-        var user = new User(login.name);
+        
+        // Check if the user already exists in the database
+        var existingUser = dbContext.Users.FirstOrDefault(u => u.Username == login.name);
 
-        creds.Register(login.name, login.pass);
+        if (existingUser != null)
+        {
+            Console.WriteLine("User already exists. Registration failed.");
+        }
+        else
+        {
+            // Create a new User entity and add it to the database
+            var newUser = new User { Username = login.name };
+            dbContext.Users.Add(newUser);
+            
+            // Save changes to the database
+            dbContext.SaveChanges();
 
-        Console.WriteLine("Registration Complete.");
-        return user;
+            // Register the user in the Credentials service
+            creds.Register(login.name, login.pass);
+
+            Console.WriteLine("Registration Complete.");
+        }
     }
 
     static User TryLogin(Credentials creds) {
