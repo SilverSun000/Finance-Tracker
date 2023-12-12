@@ -2426,19 +2426,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\exx\\.nuget\\packages\\": {}
+    "C:\\Users\\Billson\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\exx\\Documents\\GitHub\\Finance-Tracker\\src\\finance-tracker\\finance-tracker.csproj",
+      "projectUniqueName": "C:\\Users\\Billson\\Documents\\GitHub\\Finance-Tracker\\src\\finance-tracker\\finance-tracker.csproj",
       "projectName": "finance-tracker",
-      "projectPath": "C:\\Users\\exx\\Documents\\GitHub\\Finance-Tracker\\src\\finance-tracker\\finance-tracker.csproj",
-      "packagesPath": "C:\\Users\\exx\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\exx\\Documents\\GitHub\\Finance-Tracker\\src\\finance-tracker\\obj\\",
+      "projectPath": "C:\\Users\\Billson\\Documents\\GitHub\\Finance-Tracker\\src\\finance-tracker\\finance-tracker.csproj",
+      "packagesPath": "C:\\Users\\Billson\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Billson\\Documents\\GitHub\\Finance-Tracker\\src\\finance-tracker\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\exx\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Billson\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2501,7 +2506,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
       }
     }
   }

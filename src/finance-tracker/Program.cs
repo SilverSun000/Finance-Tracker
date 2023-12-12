@@ -30,7 +30,9 @@ class Program {
                     """
                     1. Register
                     2. Login
-                    3. Exit
+                    3. Clear Database
+                    4. Print Database
+                    5. Exit
                     """
                 );
 
@@ -50,10 +52,20 @@ class Program {
 
                         break;
                     case "3":
+                        ClearDatabase(dbContext);
+                        Console.Write("Database has been wiped.");
+                        Console.ReadKey();
+
+                        break;
+                    case "4":
+                        PrintDatabaseContents(dbContext);
+                        Console.ReadKey();
+
+                        break;
+                    case "5":
                         Console.Clear();
                         Environment.Exit(0);
                         break;
-
                     default:
                         Console.WriteLine("Invalid choice. Please try again.");
                         break;
@@ -91,8 +103,6 @@ class Program {
 
             dbContext.SaveChanges();
 
-            PrintDatabaseContents(dbContext);
-
             creds.Register(login.name, login.pass);
 
             Console.WriteLine("Registration Complete.");
@@ -128,5 +138,9 @@ class Program {
             Console.WriteLine($"Username: {user.Username}, Password: {user.Password}");
         }
         Console.WriteLine();
+    }
+    public static void ClearDatabase(AppDbContext dbContext) {
+        dbContext.Database.EnsureDeleted();
+        dbContext.Database.EnsureCreated();
     }
 }
