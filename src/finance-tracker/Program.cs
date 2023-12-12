@@ -7,7 +7,15 @@ using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;
 
-
+/// <summary>
+/// TODO:
+/// -Put all static service functions in their own class (So program.cs is cleaner)
+/// -Connect Tree (for income / spending categories) to each individual user and save it to the database.
+/// -Allow User to remove and add categories / transactions once they've logged in.
+/// 
+/// 
+/// -for Scabbage: Write Comments, no change code plez I beg.
+/// </summary>
 class Program {
     static void Main() {
         using (var dbContext = new AppDbContext()) {
