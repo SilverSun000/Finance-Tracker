@@ -10,8 +10,6 @@ using System.Text;
 
 class Program {
     static void Main() {
-        string credPath = "../userCredentials.txt";
-
         using (var dbContext = new AppDbContext()) {
             dbContext.Database.EnsureCreated();
 
@@ -19,7 +17,7 @@ class Program {
 
             while (true)
             {
-                //Console.Clear();
+                Console.Clear();
                 Console.WriteLine(
                     """
                     1. Register
@@ -77,19 +75,16 @@ class Program {
         }
         else
         {
-            // Create a new User entity and add it to the database
             var newUser = new User { Username = login.name };
             string hashedPassword = Credentials.Hash(login.pass);
             newUser.Password = hashedPassword;
 
             dbContext.Users.Add(newUser);
 
-            // Save changes to the database
             dbContext.SaveChanges();
 
             PrintDatabaseContents(dbContext);
 
-            // Register the user in the Credentials service
             creds.Register(login.name, login.pass);
 
             Console.WriteLine("Registration Complete.");
@@ -106,7 +101,6 @@ class Program {
 
         if (user != null)
         {
-            // Check if the entered password matches the stored hashed password
             if (creds.TryAuthenticate(login.name, login.pass))
             {
                 Console.WriteLine("Login Successful");
@@ -120,7 +114,6 @@ class Program {
 
     static void PrintDatabaseContents(AppDbContext dbContext)
     {
-        // Print the contents of the Users table to the console
         Console.WriteLine("Users in the Database:");
         foreach (var user in dbContext.Users)
         {
