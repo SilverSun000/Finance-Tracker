@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq.Expressions;
 using Newtonsoft.Json;
 
 class Program {
@@ -8,12 +9,14 @@ class Program {
         string credPath = "../userCredentials.txt";
 
         using (var dbContext = new AppDbContext()) {
+            dbContext.Database.EnsureCreated();
+
             var credentials = new Credentials();
             credentials.TryLoadFrom(credPath);
 
             while (true)
             {
-                Console.Clear();
+                //Console.Clear();
                 Console.WriteLine(
                     """
                     1. Register
@@ -68,29 +71,43 @@ class Program {
 
     static void Register(Credentials creds, AppDbContext dbContext) {
         var login = RequestCredentials();
-        
-        // Check if the user already exists in the database
-        var existingUser = dbContext.Users.FirstOrDefault(u => u.Username == login.name);
 
-        if (existingUser != null)
+        try
         {
-            Console.WriteLine("User already exists. Registration failed.");
+            // Check if the user already exists in the database
+            var existingUser = dbContext.Users.FirstOrDefault(u => u.Username == login.name);
+
+            if (existingUser != null)
+            {
+                Console.WriteLine("User already exists. Registration failed.");
+                Console.ReadKey();
+            }
+            else
+            {
+                // Create a new User entity and add it to the database
+                var newUser = new User { Username = login.name };
+                dbContext.Users.Add(newUser);
+
+                // Save changes to the database
+                dbContext.SaveChanges();
+
+                // Register the user in the Credentials service
+                creds.Register(login.name, login.pass);
+
+                Console.WriteLine("Registration Complete.");
+                Console.ReadKey();
+            }
         }
-        else
+        catch (Exception ex)
         {
-            // Create a new User entity and add it to the database
-            var newUser = new User { Username = login.name };
-            dbContext.Users.Add(newUser);
-            
-            // Save changes to the database
-            dbContext.SaveChanges();
-
-            // Register the user in the Credentials service
-            creds.Register(login.name, login.pass);
-
-            Console.WriteLine("Registration Complete.");
+            Console.WriteLine($"Error during registration: {ex.Message}");
+            Console.WriteLine($"StackTrace: {ex.StackTrace}");
+            Console.ReadKey();
+            // You might want to log the exception for more detailed analysis
         }
+        Console.ReadKey();
     }
+
 
     static User TryLogin(Credentials creds) {
         var login = RequestCredentials();
