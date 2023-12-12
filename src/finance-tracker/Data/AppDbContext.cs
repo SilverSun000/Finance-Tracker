@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 public class AppDbContext : DbContext
 {
@@ -7,10 +6,6 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // Configure the database connection string
         optionsBuilder.UseSqlite("Data Source=app.db");
-
-        // Configure logging to console
-        optionsBuilder.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
     }
 }

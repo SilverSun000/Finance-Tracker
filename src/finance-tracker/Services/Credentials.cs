@@ -1,79 +1,64 @@
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Newtonsoft.Json;
 
 public class Credentials
 {
-    Dictionary<string, string> userCreds = new();
-
-    public bool TryLoadFrom(string path)
+    private readonly AppDbContext dbContext;
+    public Credentials(AppDbContext dbContext)
     {
-        Dictionary<string, string>? newCreds;
-
-        try
-        {
-            string json = File.ReadAllText(path);
-            newCreds = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-        }
-        catch (FileNotFoundException)
-        {
-            return false;
-        }
-
-        foreach (var kv in newCreds)
-        {
-            var name = kv.Key;
-            var hash = kv.Value;
-
-            userCreds.Remove(name);
-            userCreds.Add(name, hash);
-        }
-
-        return true;
-    }
-
-
-    public void Save(string filePath)
-    {
-        string json = JsonConvert.SerializeObject(userCreds, Formatting.Indented);
-        File.WriteAllText(filePath, json);
+        this.dbContext = dbContext;
     }
 
     public void Register(string username, string password)
     {
         var passHash = Hash(password);
 
-        userCreds.Remove(username);
-        userCreds.Add(username, passHash);
-    }
+        // Check if the user already exists in the database
+        var existingUser = dbContext.Users.FirstOrDefault(u => u.Username == username);
 
-    static string Hash(string password)
-    {
-        using (var algo = SHA256.Create())
+        if (existingUser == null)
         {
-            var hashBytes = algo.ComputeHash(Encoding.UTF8.GetBytes(password));
-            var hashStr = Convert.ToBase64String(hashBytes);
-            return hashStr;
+            // Create a new User entity and add it to the database
+            var newUser = new User { Username = username, Password = passHash };
+            dbContext.Users.Add(newUser);
+
+            // Save changes to the database
+            dbContext.SaveChanges();
         }
     }
 
     public bool TryGet(string username, out string passwordHash)
     {
-        return userCreds.TryGetValue(username, out passwordHash);
+        var user = dbContext.Users.FirstOrDefault(u => u.Username == username);
+
+        if (user != null)
+        {
+            passwordHash = user.Password;
+            return true;
+        }
+
+        passwordHash = null;
+        return false;
     }
 
     public bool TryAuthenticate(string username, string loginPassword)
     {
-        if(!TryGet(username, out var storedHash))
-            return false;
+        if (TryGet(username, out var storedHash))
+        {
+            var hashedPassword = Hash(loginPassword);
+            return hashedPassword == storedHash;
+        }
 
-        var hp = Hash(loginPassword);
-        return hp == storedHash;
+        return false;
     }
 
-    public void Clear()
+    public static string Hash(string password)
     {
-        userCreds.Clear();
+        using (var algo = SHA256.Create())
+        {
+            var hashBytes = algo.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hashBytes);
+        }
     }
 }
-

@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
+using System.Security.Policy;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
+using System.Text;
+
 
 class Program {
     static void Main() {
@@ -11,8 +15,7 @@ class Program {
         using (var dbContext = new AppDbContext()) {
             dbContext.Database.EnsureCreated();
 
-            var credentials = new Credentials();
-            credentials.TryLoadFrom(credPath);
+            var credentials = new Credentials(dbContext);
 
             while (true)
             {
@@ -21,8 +24,7 @@ class Program {
                     """
                     1. Register
                     2. Login
-                    3. Clear all credentials
-                    4. Exit
+                    3. Exit
                     """
                 );
 
@@ -33,21 +35,15 @@ class Program {
                 {
                     case "1":
                         Register(credentials, dbContext);
-                        credentials.Save(credPath);
+                        Console.ReadKey();
 
                         break;
                     case "2":
-                        TryLogin(credentials);
+                        TryLogin(credentials, dbContext);
                         Console.ReadKey();
 
                         break;
                     case "3":
-                        credentials.Clear();
-                        credentials.Save(credPath);
-
-                        Console.WriteLine("All Cealred.");
-                        break;
-                    case "4":
                         Console.Clear();
                         Environment.Exit(0);
                         break;
@@ -72,54 +68,64 @@ class Program {
     static void Register(Credentials creds, AppDbContext dbContext) {
         var login = RequestCredentials();
 
-        try
+        var existingUser = dbContext.Users.FirstOrDefault(u => u.Username == login.name);
+
+        if (existingUser != null)
         {
-            // Check if the user already exists in the database
-            var existingUser = dbContext.Users.FirstOrDefault(u => u.Username == login.name);
-
-            if (existingUser != null)
-            {
-                Console.WriteLine("User already exists. Registration failed.");
-                Console.ReadKey();
-            }
-            else
-            {
-                // Create a new User entity and add it to the database
-                var newUser = new User { Username = login.name };
-                dbContext.Users.Add(newUser);
-
-                // Save changes to the database
-                dbContext.SaveChanges();
-
-                // Register the user in the Credentials service
-                creds.Register(login.name, login.pass);
-
-                Console.WriteLine("Registration Complete.");
-                Console.ReadKey();
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error during registration: {ex.Message}");
-            Console.WriteLine($"StackTrace: {ex.StackTrace}");
+            Console.WriteLine("User already exists. Registration failed.");
             Console.ReadKey();
-            // You might want to log the exception for more detailed analysis
         }
-        Console.ReadKey();
+        else
+        {
+            // Create a new User entity and add it to the database
+            var newUser = new User { Username = login.name };
+            string hashedPassword = Credentials.Hash(login.pass);
+            newUser.Password = hashedPassword;
+
+            dbContext.Users.Add(newUser);
+
+            // Save changes to the database
+            dbContext.SaveChanges();
+
+            PrintDatabaseContents(dbContext);
+
+            // Register the user in the Credentials service
+            creds.Register(login.name, login.pass);
+
+            Console.WriteLine("Registration Complete.");
+            Console.ReadKey();
+        }
     }
 
 
-    static User TryLogin(Credentials creds) {
+    static User TryLogin(Credentials creds, AppDbContext dbContext) {
         var login = RequestCredentials();
 
-        if (creds.TryAuthenticate(login.name, login.pass)) {
-            Console.WriteLine("Login Successful");
+        // Fetch the user from the database
+        var user = dbContext.Users.FirstOrDefault(u => u.Username == login.name);
 
-            return new User(login.name);
+        if (user != null)
+        {
+            // Check if the entered password matches the stored hashed password
+            if (creds.TryAuthenticate(login.name, login.pass))
+            {
+                Console.WriteLine("Login Successful");
+                return new User(login.name);
+            }
         }
 
         Console.WriteLine("Invalid username or password.");
-
         return null;
+    }
+
+    static void PrintDatabaseContents(AppDbContext dbContext)
+    {
+        // Print the contents of the Users table to the console
+        Console.WriteLine("Users in the Database:");
+        foreach (var user in dbContext.Users)
+        {
+            Console.WriteLine($"Username: {user.Username}, Password: {user.Password}");
+        }
+        Console.WriteLine();
     }
 }
