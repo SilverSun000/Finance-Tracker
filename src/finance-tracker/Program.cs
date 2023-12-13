@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
 using System.Security.Policy;
-using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;
 
 /// <summary>
-/// TODO:
-/// -Put all static service functions in their own class (So program.cs is cleaner)
-/// -Connect Tree (for income / spending categories) to each individual user and save it to the database.
-/// -Allow User to remove and add categories / transactions once they've logged in.
+/// - Create a Dashboard once the user has logged in
+/// - User can view total transactions associated with their account.
+/// - User can view which categories are associated with each transactions (rent, grocery, etc)
+/// - User can Remove & Edit categories / transactions if necessary
+/// - User can Add categories / transactios if necessary
 /// 
-/// 
-/// -for Scabbage: Write Comments, no change code plez I beg.
+/// - For Scabbage: Write Comments, no change code plez I beg.
 /// </summary>
 class Program {
     static void Main() {
@@ -58,7 +57,7 @@ class Program {
 
                         break;
                     case "4":
-                        UserService.PrintDatabaseContents(dbContext);
+                        UserService.PrintUsers(dbContext);
                         Console.ReadKey();
 
                         break;
