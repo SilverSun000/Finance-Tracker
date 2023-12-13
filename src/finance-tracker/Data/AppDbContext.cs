@@ -11,18 +11,17 @@ public class AppDbContext : DbContext
         optionsBuilder.UseSqlite($"Data Source={dbPath}");
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<TreeNode<string>>().HasKey(t => t.Id);
+
+    modelBuilder.Entity<User>(entity =>
     {
-        modelBuilder.Entity<TreeNode<string>>()
-            .HasKey(t => t.Id); // Define a key for TreeNode<string>
+        entity.HasOne(u => u.CategoryTree)
+              .WithOne()
+              .HasForeignKey<User>(u => u.CategoryTreeId)
+              .OnDelete(DeleteBehavior.Cascade);
+    });
 
-        modelBuilder.Entity<User>(entity =>
-        {
-            entity.HasOne(u => u.CategoryTree)
-                .WithOne()
-                .HasForeignKey<User>(u => u.CategoryTreeId);
-        });
-
-        base.OnModelCreating(modelBuilder);
+    base.OnModelCreating(modelBuilder);
 }
-
 }

@@ -75,4 +75,10 @@ public class UserService {
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
     }
+    public static void PrintTree(User loggedInUser)
+{
+    Console.WriteLine($"Category Tree for User: {loggedInUser.Username}");
+    TreePrinter.PrintTree(loggedInUser.CategoryTree);
+    Console.WriteLine();
+}
 }

@@ -15,12 +15,17 @@ using System.Text;
 /// 
 /// - For Scabbage: Write Comments, no change code plez I beg.
 /// </summary>
-class Program {
-    static void Main() {
-        using (var dbContext = new AppDbContext()) {
+class Program
+{
+    static void Main()
+    {
+        using (var dbContext = new AppDbContext())
+        {
             dbContext.Database.EnsureCreated();
 
             var credentials = new Credentials(dbContext);
+            User loggedInUser = null;
+            bool isLoggedIn = false; // Declare outside the while loop
 
             while (true)
             {
@@ -29,9 +34,10 @@ class Program {
                     """
                     1. Register
                     2. Login
-                    3. Clear Database
-                    4. Print Database
-                    5. Exit
+                    3. Display Category Tree
+                    4. Clear Database
+                    5. Print Database
+                    6. Exit
                     """
                 );
 
@@ -43,25 +49,34 @@ class Program {
                     case "1":
                         UserService.Register(credentials, dbContext);
                         Console.ReadKey();
-
                         break;
                     case "2":
-                        UserService.TryLogin(credentials, dbContext);
+                        loggedInUser = UserService.TryLogin(credentials, dbContext);
+                        isLoggedIn = loggedInUser != null;
                         Console.ReadKey();
-
                         break;
                     case "3":
+                        if (isLoggedIn)
+                        {
+                            UserService.PrintTree(loggedInUser);
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please log in first.");
+                            Console.ReadKey();
+                        }
+                        break;
+                    case "4":
                         UserService.ClearDatabase(dbContext);
                         Console.Write("Database has been wiped.");
                         Console.ReadKey();
-
-                        break;
-                    case "4":
-                        UserService.PrintUsers(dbContext);
-                        Console.ReadKey();
-
                         break;
                     case "5":
+                        UserService.PrintUsers(dbContext);
+                        Console.ReadKey();
+                        break;
+                    case "6":
                         Console.Clear();
                         Environment.Exit(0);
                         break;
