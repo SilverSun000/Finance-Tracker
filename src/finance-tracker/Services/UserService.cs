@@ -62,7 +62,7 @@ public class UserService {
         return null;
     }
 
-    public static void PrintDatabaseContents(AppDbContext dbContext)
+    public static void PrintUsers(AppDbContext dbContext)
     {
         Console.WriteLine("Users in the Database:");
         foreach (var user in dbContext.Users)

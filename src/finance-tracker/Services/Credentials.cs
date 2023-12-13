@@ -21,6 +21,7 @@ public class Credentials
         {
             // Create a new User entity and add it to the database
             var newUser = new User { Username = username, Password = passHash };
+            newUser.CategoryTree = new TreeNode<string>("Root");
             dbContext.Users.Add(newUser);
 
             // Save changes to the database

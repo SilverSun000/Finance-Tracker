@@ -34,7 +34,9 @@ public class Tree<T> {
 }
 
 public class TreeNode<T> {
+    public int Id { get; set; }
     public T Data { get; set; }
+    public int? ParentId { get; set; }
     public List<TreeNode<T>> Children { get; set; }
     public TreeNode<T> Parent { get; set; }
     public List<Transaction> Transactions { get; set; }
