@@ -1,6 +1,9 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 public class Tree<T> {
+    [Key]
+    public int Id { get; set; }
     public TreeNode<T> Root { get; private set; }
     public Tree() { Root = null; }
     public Tree (T rootData) { Root = new TreeNode<T>(rootData); }

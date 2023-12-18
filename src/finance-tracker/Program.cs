@@ -26,6 +26,7 @@ class Program
             var credentials = new Credentials(dbContext);
             User loggedInUser = null;
             bool isLoggedIn = false; // Declare outside the while loop
+            UserDashboard userDashboard = null;
 
             while (true)
             {
@@ -34,10 +35,9 @@ class Program
                     """
                     1. Register
                     2. Login
-                    3. Display Category Tree
-                    4. Clear Database
-                    5. Print Database
-                    6. Exit
+                    3. Clear Database
+                    4. Print Database
+                    5. Exit
                     """
                 );
 
@@ -53,31 +53,24 @@ class Program
                     case "2":
                         loggedInUser = Credentials.TryLogin(credentials, dbContext);
                         isLoggedIn = loggedInUser != null;
+                        if (isLoggedIn) {
+                            var categoryTree = userDashboard.FetchTree(loggedInUser);
+                            userDashboard = new UserDashboard(credentials, dbContext, loggedInUser);
+                            userDashboard.DislayMenu();
+                        }
                         Console.ReadKey();
                         break;
                     case "3":
-                        if (isLoggedIn)
-                        {
-                            Credentials.PrintTree(loggedInUser);
-                            Console.ReadKey();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Please log in first.");
-                            Console.ReadKey();
-                        }
-                        break;
-                    case "4":
                         Credentials.ClearDatabase(dbContext);
                         Console.Write("Database has been wiped.");
-                        loggedInUser = null;
+                        isLoggedIn = false;
                         Console.ReadKey();
                         break;
-                    case "5":
+                    case "4":
                         Credentials.PrintUsers(dbContext);
                         Console.ReadKey();
                         break;
-                    case "6":
+                    case "5":
                         Console.Clear();
                         Environment.Exit(0);
                         break;

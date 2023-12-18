@@ -7,9 +7,9 @@ public class User
     public int Id { get; set; }
     public string Username { get; set; }
     public string Password { get; set; }
-    public int CategoryTreeId { get; set; }
-    public TreeNode<string> CategoryTree { get; set; }
-    public User() { CategoryTree = new TreeNode<string>("Root"); }
+    public int? CategoryTreeId { get; set; }
+    public Tree<string> CategoryTree { get; set; }
+    public User() { CategoryTree = new Tree<string>("Root"); CategoryTreeId = CategoryTree.Root.Id; }
     public User(string username) : this() { Username = username; }
 }
 
