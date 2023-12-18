@@ -31,7 +31,12 @@ public class Credentials
         }
         else
         {
+            Console.WriteLine("Tree is being created!");
             var newUser = new User { Username = login.name };
+            var categoryTree = new Tree<string>("Root");
+            newUser.CategoryTree = categoryTree;
+            newUser.CategoryTreeId = categoryTree.Root.Id;
+
             string hashedPassword = Credentials.Hash(login.pass);
             newUser.Password = hashedPassword;
 

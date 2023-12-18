@@ -1,5 +1,5 @@
 public class UserDashboard {
-    private readonly Tree<string> categoryTree;
+    private Tree<string> categoryTree;
     private readonly Credentials credentials;
     private readonly AppDbContext dbContext;
     private readonly User user;
@@ -8,18 +8,18 @@ public class UserDashboard {
         this.credentials = credentials;
         this.dbContext = dbContext;
         this.user = user;
-        this.categoryTree = categoryTree;
     }
 
     public void DislayMenu() {
         while (true) {
             Console.Clear();
             Console.WriteLine(
-                @"
+                """
                 1. Add Category
                 2. Remove Category
                 3. Display Tree
-                4. Exit"
+                4. Exit
+                """
             );
 
             Console.Write("Enter your choice: ");
@@ -33,6 +33,7 @@ public class UserDashboard {
                     RemoveCategory();
                     break;
                 case "3":
+                categoryTree = FetchTree(user);
                     DisplayTree();
                     break;
                 case "4":
@@ -47,15 +48,22 @@ public class UserDashboard {
     }
 
     private void AddCategory() {
-        Console.Write("Enter category name: ");
-        string categoryName = Console.ReadLine();
+        categoryTree = FetchTree(user);
 
-        var newNode = categoryTree.AddNode(categoryTree.Root, categoryName);
+        if (categoryTree != null && categoryTree.Root != null) {
+            Console.Write("Enter category name: ");
+            string categoryName = Console.ReadLine();
 
-        Console.WriteLine($"Category '{categoryName}' added with ID {newNode.Id}.");
+            var newNode = categoryTree.AddNode(categoryTree.Root, categoryName);
+
+            Console.WriteLine($"Category '{categoryName}' added with ID {newNode.Id}.");
+        } else {
+            Console.WriteLine("Error: Category tree or root is null.");
+        }
         Console.ReadKey();
     }
     private void RemoveCategory() {
+        categoryTree = FetchTree(user);
         Console.Write("Enter category name to remove: ");
         string categoryName = Console.ReadLine();
 
@@ -90,12 +98,19 @@ public class UserDashboard {
         return null;
     }
     public Tree<string> FetchTree(User user) {
+        Console.WriteLine($"Fetching tree for user {user.Id}...");
         var categoryTree = dbContext.GetTree(user.Id);
-        if (categoryTree ==  null) {
+        Console.WriteLine(user.CategoryTreeId);
+    
+        if (categoryTree == null) {
+            Console.WriteLine("Tree not found, creating a new one...");
             categoryTree = new Tree<string>();
             user.CategoryTree = categoryTree;
             dbContext.SaveChanges();
+        } else {
+            Console.WriteLine("Tree found.");
         }
+
         return categoryTree;
     }
 }

@@ -54,8 +54,8 @@ class Program
                         loggedInUser = Credentials.TryLogin(credentials, dbContext);
                         isLoggedIn = loggedInUser != null;
                         if (isLoggedIn) {
-                            var categoryTree = userDashboard.FetchTree(loggedInUser);
                             userDashboard = new UserDashboard(credentials, dbContext, loggedInUser);
+                            Console.ReadKey();
                             userDashboard.DislayMenu();
                         }
                         Console.ReadKey();
