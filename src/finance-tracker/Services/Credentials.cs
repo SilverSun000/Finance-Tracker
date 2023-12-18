@@ -11,36 +11,6 @@ public class Credentials
         this.dbContext = dbContext;
     }
 
-    public void Register(string username, string password)
-    {
-        var passHash = Hash(password);
-
-        // Check if the user already exists in the database
-        var existingUser = dbContext.Users.FirstOrDefault(u => u.Username == username);
-
-        if (existingUser == null)
-    {
-        // Create a new User entity and add it to the database
-        var newUser = new User { Username = username, Password = passHash };
-        dbContext.Users.Add(newUser);
-
-        // Save changes to the database
-        dbContext.SaveChanges();
-    }
-    else
-    {
-        // Detach the existing user to avoid tracking conflicts
-        dbContext.Entry(existingUser).State = EntityState.Detached;
-
-        // Create a new User entity and add it to the database
-        var newUser = new User { Username = username, Password = passHash };
-        dbContext.Users.Add(newUser);
-
-        // Save changes to the database
-        dbContext.SaveChanges();
-    }
-    }
-
     public bool TryGet(string username, out string passwordHash)
     {
         var user = dbContext.Users.FirstOrDefault(u => u.Username == username);

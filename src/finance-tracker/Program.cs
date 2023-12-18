@@ -70,6 +70,7 @@ class Program
                     case "4":
                         UserService.ClearDatabase(dbContext);
                         Console.Write("Database has been wiped.");
+                        loggedInUser = null;
                         Console.ReadKey();
                         break;
                     case "5":

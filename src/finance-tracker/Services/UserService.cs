@@ -1,3 +1,6 @@
+using System.Security.Policy;
+using Microsoft.EntityFrameworkCore;
+
 public class UserService {
     public readonly AppDbContext _dbContext;
 
@@ -35,8 +38,6 @@ public class UserService {
 
             dbContext.SaveChanges();
 
-            creds.Register(login.name, login.pass);
-
             Console.WriteLine("Registration Complete.");
             Console.ReadKey();
         }
@@ -65,20 +66,23 @@ public class UserService {
     public static void PrintUsers(AppDbContext dbContext)
     {
         Console.WriteLine("Users in the Database:");
-        foreach (var user in dbContext.Users)
+        foreach (var user in dbContext.Users.AsNoTracking().ToList())
         {
             Console.WriteLine($"Username: {user.Username}, Password: {user.Password}");
         }
         Console.WriteLine();
     }
     public static void ClearDatabase(AppDbContext dbContext) {
+        foreach(var entity in dbContext.ChangeTracker.Entries().ToList()) {
+            entity.State = EntityState.Detached;
+        }
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
     }
     public static void PrintTree(User loggedInUser)
-{
-    Console.WriteLine($"Category Tree for User: {loggedInUser.Username}");
-    TreePrinter.PrintTree(loggedInUser.CategoryTree);
-    Console.WriteLine();
-}
+    {
+        Console.WriteLine($"Category Tree for User: {loggedInUser.Username}");
+        TreePrinter.PrintTree(loggedInUser.CategoryTree);
+        Console.WriteLine();
+    }
 }
