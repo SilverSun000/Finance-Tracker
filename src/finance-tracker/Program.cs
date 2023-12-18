@@ -47,18 +47,18 @@ class Program
                 switch (choice)
                 {
                     case "1":
-                        UserService.Register(credentials, dbContext);
+                        Credentials.Register(credentials, dbContext);
                         Console.ReadKey();
                         break;
                     case "2":
-                        loggedInUser = UserService.TryLogin(credentials, dbContext);
+                        loggedInUser = Credentials.TryLogin(credentials, dbContext);
                         isLoggedIn = loggedInUser != null;
                         Console.ReadKey();
                         break;
                     case "3":
                         if (isLoggedIn)
                         {
-                            UserService.PrintTree(loggedInUser);
+                            Credentials.PrintTree(loggedInUser);
                             Console.ReadKey();
                         }
                         else
@@ -68,13 +68,13 @@ class Program
                         }
                         break;
                     case "4":
-                        UserService.ClearDatabase(dbContext);
+                        Credentials.ClearDatabase(dbContext);
                         Console.Write("Database has been wiped.");
                         loggedInUser = null;
                         Console.ReadKey();
                         break;
                     case "5":
-                        UserService.PrintUsers(dbContext);
+                        Credentials.PrintUsers(dbContext);
                         Console.ReadKey();
                         break;
                     case "6":
